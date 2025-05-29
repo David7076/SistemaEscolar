@@ -21,6 +21,8 @@ public class Menu {
 
     private List<Pessoa> pessoa = new ArrayList<>();
 
+
+    //Método responsável por conter a lógica do programa
     public void logicaMenu() {
         int opcao;
         int resposta;
