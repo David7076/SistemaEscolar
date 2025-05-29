@@ -1,5 +1,6 @@
 package Menu;
 
+import Autenticavel.Autenticavel;
 import Entidades_Irreais.Curso;
 import Entidades_Irreais.Disciplina;
 import Entidades_Irreais.Endereco;
@@ -42,11 +43,16 @@ public class Menu {
                     case 2:
                         listarPessoas();
                         break;
+                    case 3:
+                        autenticarLogin();
+                        break;
                 }
             }
         }
 
     }
+
+
 
     private void cadastrarPessoa() {
 //        String resp = showInputDialog("Você gostaria de cadastrar um Aluno, Professor ou um Funcionário? ");
@@ -92,13 +98,17 @@ public class Menu {
                             break;
                         case 2:
                             double salario = parseDouble(showInputDialog("Salário do professor: "));
+                            String user = showInputDialog("Digite o nome de um Usuario para o professor");
+                            String password = showInputDialog("Digite a senha do professor:  ");
                             Disciplina disciplina = new Disciplina("Programação Orientada a Objetos", "60 aulas");
                             pessoa.add(new Professor(nome, idade, cpf, endereco, salario, disciplina));
                             break;
                         case 3:
                             String cargo = showInputDialog("Digite o cargo do Funcionário: ");
                             double salarioFuncionario = parseDouble(showInputDialog("Digite o salario do Funcionário: "));
-                            pessoa.add(new Funcionario(nome, idade, cpf, endereco, cargo, salarioFuncionario));
+                            String users = showInputDialog("Digite o nome de um Usuario para o professor");
+                            String passwords = showInputDialog("Digite a senha do professor:  ");
+                            pessoa.add(new Funcionario(nome, idade, cpf, endereco, cargo, salarioFuncionario, users, passwords));
                             break;
                     }
                     int num = parseInt(showInputDialog("Deseja cadastrar mais alguma pessoa? " +
@@ -118,6 +128,22 @@ public class Menu {
     public void listarPessoas() {
         for(Pessoa p : pessoa) {
             showMessageDialog(null, p.apresentarDados());
+        }
+    }
+
+    private void autenticarLogin() {
+        boolean autenticacao = false;
+        String user = showInputDialog("Digite seu usuário: ");
+        String password = showInputDialog("Digite sua senha: ");
+
+        for(Pessoa p : pessoa) {
+            if(p instanceof Autenticavel) {
+                 autenticacao = ((Autenticavel) p).autenticar(user, password);
+                if(autenticacao)
+                    showMessageDialog(null, p.apresentarDados());
+                else
+                    showMessageDialog(null, "Usuário ou senha incorretos! ");
+            }
         }
     }
 
