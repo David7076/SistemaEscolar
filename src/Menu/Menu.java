@@ -4,10 +4,7 @@ import Autenticavel.Autenticavel;
 import Entidades_Irreais.Curso;
 import Entidades_Irreais.Disciplina;
 import Entidades_Irreais.Endereco;
-import Entidades_Reais.Aluno;
-import Entidades_Reais.Funcionario;
-import Entidades_Reais.Pessoa;
-import Entidades_Reais.Professor;
+import Entidades_Reais.*;
 
 import static javax.swing.JOptionPane.*;
 
@@ -46,11 +43,16 @@ public class Menu {
                     case 3:
                         autenticarLogin();
                         break;
+                    case 4:
+                        buscarNomeOuTipo();
+                        break;
+
                 }
             }
         }
 
     }
+
 
 
 
@@ -83,10 +85,7 @@ public class Menu {
             Endereco endereco = new Endereco();
 
             while (pararLaco) {
-                int resp = parseInt(showInputDialog("Essa pessoa será o que no Sistema? "
-                        + "\n1 - Aluno"
-                        + "\n2 - Professor"
-                        + "\n3 - Funcionario"));
+                int resp = parseInt(showInputDialog("Essa pessoa será o que no Sistema? " + gerartiposObjetos()));
 
                 if (resp < 1 || resp > 3) showMessageDialog(null, "Resposta inválida! ");
                 else {
@@ -98,17 +97,15 @@ public class Menu {
                             break;
                         case 2:
                             double salario = parseDouble(showInputDialog("Salário do professor: "));
-                            String user = showInputDialog("Digite o nome de um Usuario para o professor");
-                            String password = showInputDialog("Digite a senha do professor:  ");
                             Disciplina disciplina = new Disciplina("Programação Orientada a Objetos", "60 aulas");
-                            pessoa.add(new Professor(nome, idade, cpf, endereco, salario, disciplina));
+                            Usuario usuario = cadastrarUsuario();
+                            pessoa.add(new Professor(nome, idade, cpf, endereco, salario, disciplina, usuario));
                             break;
                         case 3:
                             String cargo = showInputDialog("Digite o cargo do Funcionário: ");
                             double salarioFuncionario = parseDouble(showInputDialog("Digite o salario do Funcionário: "));
-                            String users = showInputDialog("Digite o nome de um Usuario para o professor");
-                            String passwords = showInputDialog("Digite a senha do professor:  ");
-                            pessoa.add(new Funcionario(nome, idade, cpf, endereco, cargo, salarioFuncionario, users, passwords));
+                            Usuario usuarioFuncionario = cadastrarUsuario();
+                            pessoa.add(new Funcionario(nome, idade, cpf, endereco, cargo, salarioFuncionario, usuarioFuncionario));
                             break;
                     }
                     int num = parseInt(showInputDialog("Deseja cadastrar mais alguma pessoa? " +
@@ -125,30 +122,63 @@ public class Menu {
         }
     }
 
-    public void listarPessoas() {
-        for(Pessoa p : pessoa) {
-            showMessageDialog(null, p.apresentarDados());
+
+
+    private void listarPessoas() {
+//        if(!pessoa.isEmpty()) {
+//            for(Pessoa p : pessoa) {
+//                showMessageDialog(null, p.apresentarDados());
+//            }
+//        }else
+//            showMessageDialog(null, "Nenhuma pessoa foi cadastrada ainda! ");
+
+        if (existeCadastro()) {
+            for (Pessoa p : pessoa) {
+                showMessageDialog(null, p.apresentarDados());
+            }
+        } else {
+            showMessageDialog(null, "Não há pessoas cadastradas no sistema! ");
         }
+
     }
 
     private void autenticarLogin() {
         boolean autenticacao = false;
-        String user = showInputDialog("Digite seu usuário: ");
-        String password = showInputDialog("Digite sua senha: ");
 
-        for(Pessoa p : pessoa) {
-            if(p instanceof Autenticavel) {
-                 autenticacao = ((Autenticavel) p).autenticar(user, password);
-                if(autenticacao)
-                    showMessageDialog(null, p.apresentarDados());
-                else
-                    showMessageDialog(null, "Usuário ou senha incorretos! ");
+        if (existeCadastro()) {
+            String user = showInputDialog("Digite seu usuário: ");
+            String password = showInputDialog("Digite sua senha: ");
+            for (Pessoa p : pessoa) {
+                if (p instanceof Autenticavel) {
+                    autenticacao = ((Autenticavel) p).autenticar(user, password);
+                    if (autenticacao) {
+                        showMessageDialog(null, "Autenticado com sucesso! ");
+                        autenticacao = true;
+                    }
+                }
+            }
+            if (!autenticacao) {
+                showMessageDialog(null, "Login inválido! ");
+            }
+        }
+        else
+            showMessageDialog(null, "Não há pessoas cadastradas para autenticar! ");
+
+    }
+
+    private void buscarNomeOuTipo() {
+
+        int numero = parseInt(showInputDialog("Você deseja buscar por nome ou por tipo (ALUNO / PROFESSOR / FUNCIONARIO ?" + gerartiposObjetos()));
+        boolean numeroValido = (numero == 1 || numero == 2 || numero == 3);
+        if(numeroValido) {
+            switch (numero) {
+                case 1:
+
             }
         }
     }
 
-
-    public String gerarMenu() {
+    private String gerarMenu() {
         String aux = "Bem vindo ao Sistema Escolar";
         aux += "\n1 - Cadastrar Pessoa";
         aux += "\n2 - Listar todas as Pessoas";
@@ -158,4 +188,27 @@ public class Menu {
         aux += "\n6 - Sair";
         return aux;
     }
+
+    private String gerartiposObjetos() {
+        String aux = "\n1 - Aluno"
+                + "\n2 - Professor"
+                + "\n3 - Funcionario";
+        return aux;
+    }
+
+    private boolean existeCadastro() {
+        if (pessoa.isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    private Usuario cadastrarUsuario() {
+        Usuario usuario;
+        String nomeUser = showInputDialog("Digite o nome de um usuario: ");
+        String senha = showInputDialog("Digite uma senha para esse usuário: ");
+        return usuario = new Usuario(nomeUser, senha);
+    }
+
+
 }

@@ -6,20 +6,18 @@ import Entidades_Irreais.Endereco;
 public class Funcionario extends Pessoa implements Autenticavel {
     private String cargo;
     private double salario;
-    private String user;
-    private String senha;
+    private Usuario usuario;
 
-    public Funcionario(String nome, int idade, String cpf, Endereco endereco, String cargo, double salario, String user, String senha) {
+    public Funcionario(String nome, int idade, String cpf, Endereco endereco, String cargo, double salario, Usuario usuario) {
         super(nome, idade, cpf, endereco);
         this.cargo = cargo;
         this.salario = salario;
-        this.user = user;
-        this.senha = senha;
+        this.usuario = usuario;
     }
 
     @Override
     public boolean autenticar(String usuario, String senha) {
-        if(senha.equals(this.senha) && usuario.equals(this.user)) {
+        if(senha.equals(this.usuario.getSenha()) && usuario.equals(this.usuario.getUser())) {
             return true;
         }
         return false;
