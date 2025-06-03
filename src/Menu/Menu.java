@@ -54,8 +54,6 @@ public class Menu {
     }
 
 
-
-
     private void cadastrarPessoa() {
 //        String resp = showInputDialog("Você gostaria de cadastrar um Aluno, Professor ou um Funcionário? ");
 //        while(true) {
@@ -123,7 +121,6 @@ public class Menu {
     }
 
 
-
     private void listarPessoas() {
 //        if(!pessoa.isEmpty()) {
 //            for(Pessoa p : pessoa) {
@@ -160,22 +157,33 @@ public class Menu {
             if (!autenticacao) {
                 showMessageDialog(null, "Login inválido! ");
             }
-        }
-        else
+        } else
             showMessageDialog(null, "Não há pessoas cadastradas para autenticar! ");
 
     }
 
     private void buscarNomeOuTipo() {
-
-        int numero = parseInt(showInputDialog("Você deseja buscar por nome ou por tipo (ALUNO / PROFESSOR / FUNCIONARIO ?" + gerartiposObjetos()));
-        boolean numeroValido = (numero == 1 || numero == 2 || numero == 3);
-        if(numeroValido) {
-            switch (numero) {
-                case 1:
-
+        while (true) {
+            int numero = parseInt(showInputDialog("Você deseja buscar por NOME ou por TIPO (ALUNO / PROFESSOR / FUNCIONARIO) ?" + "\n1 - Nome + \n2-Tipo"));
+            if (numero == 2) {
+                while (true) {
+                    int num = parseInt(showInputDialog(gerartiposObjetos()));
+                    boolean numeroValido = (num == 1 || num == 2 || num == 3);
+                    if (numeroValido) {
+                        verficaTipoObjeto();
+                        break;
+                    } else {
+                        showMessageDialog(null, "Opção inválida! ");
+                    }
+                }
+                break;
+            } else if (numero == 1) {
+            } else {
+                showMessageDialog(null, "Digite uma opção válida! ");
             }
         }
+
+
     }
 
     private String gerarMenu() {
@@ -194,6 +202,18 @@ public class Menu {
                 + "\n2 - Professor"
                 + "\n3 - Funcionario";
         return aux;
+    }
+
+    private void verficaTipoObjeto() {
+        for (Pessoa p : pessoa) {
+            if (p instanceof Aluno) {
+                showMessageDialog(null, p.apresentarDados());
+            } else if (p instanceof Professor) {
+                showMessageDialog(null, p.apresentarDados());
+            } else {
+                showMessageDialog(null, p.apresentarDados());
+            }
+        }
     }
 
     private boolean existeCadastro() {
