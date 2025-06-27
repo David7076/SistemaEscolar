@@ -44,11 +44,29 @@ public class Menu {
                         autenticarLogin();
                         break;
                     case 4:
-                        buscarNomeOuTipo();
+                        buscarNome();
                         break;
-
+                    case 5:
+                        remove();
+                        break;
                 }
             }
+        }
+
+    }
+
+    private void remove() {
+        if(existeCadastro()) {
+            String resp = showInputDialog("Digite o nome da pessoa que você deseja remover: ");
+            for(Pessoa p : pessoa) {
+                if(p.getNome().equalsIgnoreCase(resp)) {
+                    pessoa.remove(p);
+                    showMessageDialog(null, p.getNome() + " removido com sucesso!");
+                }
+            }
+        }
+        else {
+            showMessageDialog(null, "Não é possível remover se não há pessoas cadastradas! ");
         }
 
     }
@@ -162,26 +180,49 @@ public class Menu {
 
     }
 
-    private void buscarNomeOuTipo() {
-        while (true) {
-            int numero = parseInt(showInputDialog("Você deseja buscar por NOME ou por TIPO (ALUNO / PROFESSOR / FUNCIONARIO) ?" + "\n1 - Nome + \n2-Tipo"));
-            if (numero == 2) {
-                while (true) {
-                    int num = parseInt(showInputDialog(gerartiposObjetos()));
-                    boolean numeroValido = (num == 1 || num == 2 || num == 3);
-                    if (numeroValido) {
-                        verficaTipoObjeto();
-                        break;
-                    } else {
-                        showMessageDialog(null, "Opção inválida! ");
+    private void buscarNome() {
+//        while (true) {
+            if(existeCadastro()) {
+                String nome = showInputDialog("Digite o nome da pessoa que você quer buscar: ").toLowerCase();
+                for(Pessoa p : pessoa) {
+                    if(p.getNome().toLowerCase().equals(nome)) {
+                        showMessageDialog(null, p.apresentarDados());
                     }
                 }
-                break;
-            } else if (numero == 1) {
-            } else {
-                showMessageDialog(null, "Digite uma opção válida! ");
+            }else{
+                showMessageDialog(null, "Não há pessoas para buscar! ");
             }
-        }
+
+//            if (numero == 2) {
+//                while (true) {
+//                    int num = parseInt(showInputDialog(gerartiposObjetos()));
+//                    boolean numeroValido = (num == 1 || num == 2 || num == 3);
+//                    if (numeroValido) {
+//                        verficaTipoObjeto();
+//                        break;
+//                    } else {
+//                        showMessageDialog(null, "Opção inválida! ");
+//                    }
+//                }
+//                break;
+//            } else if (numero == 1) {
+//                boolean nomeEncontrado = false;
+//                String nome = showInputDialog("Digite o nome que deseja buscar: ");
+//                for (Pessoa p : pessoa) {
+//                    if(nome.equalsIgnoreCase(p.getNome())) {
+//                        showMessageDialog(null, p.apresentarDados());
+//                        nomeEncontrado = true;
+//                    }
+//                }
+//                if(!nomeEncontrado) {
+//                    showMessageDialog(null, "Nenhum nome encontrado! ");
+//                }
+//            } else {
+//                showMessageDialog(null, "Digite uma opção válida! ");
+//            }
+//        }
+
+
 
 
     }
@@ -191,7 +232,7 @@ public class Menu {
         aux += "\n1 - Cadastrar Pessoa";
         aux += "\n2 - Listar todas as Pessoas";
         aux += "\n3 - Autenticar Login";
-        aux += "\n4 - Buscar por nome ou tipo";
+        aux += "\n4 - Buscar por nome";
         aux += "\n5 - Excluir pessoa";
         aux += "\n6 - Sair";
         return aux;

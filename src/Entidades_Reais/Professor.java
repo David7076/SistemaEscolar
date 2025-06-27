@@ -9,6 +9,30 @@ public class Professor extends Pessoa implements Autenticavel  {
     private Disciplina disciplina;
     private Usuario usuario;
 
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public Disciplina getDisciplina() {
+        return disciplina;
+    }
+
+    public void setDisciplina(Disciplina disciplina) {
+        this.disciplina = disciplina;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     public Professor(String nome, int idade, String cpf, Endereco endereco, double salario, Disciplina disciplina, Usuario usuario) {
         super(nome, idade, cpf, endereco);
         this.salario = salario;

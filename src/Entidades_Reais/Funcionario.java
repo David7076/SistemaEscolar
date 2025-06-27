@@ -15,6 +15,30 @@ public class Funcionario extends Pessoa implements Autenticavel {
         this.usuario = usuario;
     }
 
+    public String getCargo() {
+        return cargo;
+    }
+
+    public void setCargo(String cargo) {
+        this.cargo = cargo;
+    }
+
+    public double getSalario() {
+        return salario;
+    }
+
+    public void setSalario(double salario) {
+        this.salario = salario;
+    }
+
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+    }
+
     @Override
     public boolean autenticar(String usuario, String senha) {
         if(senha.equals(this.usuario.getSenha()) && usuario.equals(this.usuario.getUser())) {
